@@ -19,9 +19,22 @@ const postListSchemal = Joi.object().keys({
 })
 
 
+const postAddSchemal = Joi.object().keys({
+    slug:Joi.string(),
+    title:Joi.string(),
+    feature:Joi.string(),
+    created:Joi.date(),
+    content:Joi.string(),
+    status:Joi.string(),
+    category_id:Joi.string(),
+    user_id:Joi.number()
+})
+
+
 
 module.exports = {
     loginSchema,
     tokenSchema,
-    postListSchemal
+    postListSchemal,
+    postAddSchemal
 }

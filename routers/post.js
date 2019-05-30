@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../model/db.js");
 const schemavalidate = require("../schemavalidate/index.js");
-const {postListSchemal} = schemavalidate;
+const {postListSchemal,postAddSchemal} = schemavalidate;
+const getUserIdMiddle = require("../middelware/getusrid.js");
 
 router.get("/list",(req,res)=>{
     (async (req,res)=>{
@@ -38,6 +39,18 @@ router.get("/list",(req,res)=>{
         res.send(dbresult);
 
     })(req,res).catch((err)=>{
+        res.send(err.message);
+    })
+})
+
+
+router.post("/add",getUserIdMiddle,(req,res)=>{
+   ( async (req,res)=>{
+        let obj = {...req.body};
+        console.log(obj);
+        const resvalidate = await postAddSchemal.validate(obj);
+        res.send(resvalidate)
+    })(req,res).catch(err=>{
         res.send(err.message);
     })
 })
