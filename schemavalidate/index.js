@@ -31,10 +31,27 @@ const postAddSchemal = Joi.object().keys({
 })
 
 
+const categorySchemal = Joi.object().keys({
+    slug:Joi.string(),
+    name:Joi.string(),
+    classname:Joi.string()
+})
+
+const categoryUpdateSchemal=Joi.object().keys({
+    id:Joi.number(),
+    slug:Joi.string(),
+    name:Joi.string(),
+    classname:Joi.string()
+})
+
+
+
 
 module.exports = {
     loginSchema,
     tokenSchema,
     postListSchemal,
-    postAddSchemal
+    postAddSchemal,
+    categorySchemal,
+    categoryUpdateSchemal
 }

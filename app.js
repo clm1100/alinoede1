@@ -6,6 +6,7 @@ const morgan =require("morgan");
 // 路由模块引入
 const post = require("./routers/post.js");
 const login = require("./routers/login.js");
+const category = require("./routers/category.js");
 
 var app =  express();
 // 2、配置中间件
@@ -18,6 +19,7 @@ app.use(morgan("dev"));
 // 3、拆分路由
 app.use("/login",login)
 app.use("/post",post);
+app.use("/category",category);
 
 
 // 路由划分

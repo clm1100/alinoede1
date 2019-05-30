@@ -4,9 +4,7 @@ const secret = 'clm1100';
 const getUserIdMiddle=  authorizationHeader(function(err,req,res,next){
     if(!err){
         var token = req.token;
-        console.log(token);
         var userobj  = jwt.decode(token,secret);
-        console.log("=====",userobj,"===========");
         if(userobj){
             req.body.user_id = userobj.id;
             next(); 

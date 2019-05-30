@@ -69,4 +69,29 @@ router.post("/add",getUserIdMiddle,(req,res)=>{
     })
 })
 
+// 根据id获取相应文章
+
+router.get("/detail",(req,res)=>{
+    let id = req.query.id;
+    if(!id) return res.send({code:"999",msg:"缺少id值"});
+    let sql = `SELECT p.title,p.created,p.views,p.likes,p.content,c.name,u.nickname FROM posts p
+    LEFT JOIN categories c ON c.id = p.category_id
+    LEFT JOIN users u ON u.id = p.user_id
+    WHERE p.id = ${id}`;
+    db.query(sql,(err,result)=>{
+        if(!err){
+            res.send({
+                code:200,
+                data:result[0]
+            })
+        }else{
+            res.send({
+                code:"999",
+                msg:"id错误"
+            })
+        }
+    })
+})
+
+
 module.exports = router;
