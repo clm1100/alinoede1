@@ -53,6 +53,8 @@ router.post("/token",(req,res)=>{
         }
     })
 })
+
+// 测试后端湖区token信息
 router.post("/test",AouthorMiddle(),(req,res)=>{
     res.send(req.token);
 })
