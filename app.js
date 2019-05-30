@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const formidable = require("formidable");
+const cors = require("cors");
 const morgan =require("morgan");
 // 路由模块引入
 const post = require("./routers/post.js");
@@ -12,6 +13,7 @@ var app =  express();
 // 2、配置中间件
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cookieParser())
+app.use(cors());
 // 配置开发环境日志,后期将其长久保存到本地
 app.use(morgan("dev"));
 
