@@ -7,6 +7,7 @@ const schemaValidate = require('../schemavalidate/index.js');
 const {loginSchema,tokenSchema} = schemaValidate;
 const AouthorMiddle= require("../middelware/gettoken");
 
+// 登录换取token
 router.post("/",(req,res)=>{
     var obj = {...req.body};
     console.log(obj);

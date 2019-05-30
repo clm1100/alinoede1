@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const formidable = require("formidable");
 const morgan =require("morgan");
 // 路由模块引入
-// const post = require("./routers/post.js");
+const post = require("./routers/post.js");
 const login = require("./routers/login.js");
 
 var app =  express();
@@ -17,7 +17,7 @@ app.use(morgan("dev"));
 
 // 3、拆分路由
 app.use("/login",login)
-// app.use("/post",post);
+app.use("/post",post);
 
 
 // 路由划分
