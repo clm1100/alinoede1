@@ -1,42 +1,43 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require('@hapi/joi');
 const jwt = require('jwt-simple');
 const secret = 'clm1100';
-const authorizationHeader = require('authorization-header');
-
-const loginSchema = Joi.object().keys({
-    username: Joi.string().alphanum().min(3).max(30).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-})
-
-const tokenSchema = Joi.object().keys({
-    token: [Joi.string(), Joi.number()],
-})
-
-
-const AouthorMiddle= function(){
-    return authorizationHeader(function(err,req,res,next){
-        if(!err){
-            next()
-        }else{
-            res.send(err.message)
-        }
-    })
-}
+const db = require("../model/db.js");
+const schemaValidate = require('../schemavalidate/index.js');
+const {loginSchema,tokenSchema} = schemaValidate;
+const AouthorMiddle= require("../middelware/gettoken");
 
 router.post("/",(req,res)=>{
     var obj = {...req.body};
-    loginSchema.validate(obj,(err,value)=>{
-        if(!err){
-            let token = jwt.encode(value,secret)
-            res.send(token);
-        }else{
-            res.send({"code":"999",msg:err.message})
-        }
+    console.log(obj);
+    loginSchema.validate(obj).then((value)=>{
+        var sql = `select * from users where email='${value.username}' and password=${value.password} and status="activated"`;
+        console.log(sql);
+        return new Promise((resolve,reject)=>{
+            db.query(sql,(err,result)=>{
+                if(!err){
+                    if(result.length>0){
+                        resolve(result)
+                    }else{
+                        reject({message:"用户不存在"})
+                    }
+                }else{
+                    console.log(err.message);
+                    reject(err)
+                }
+            })
+        })
+    }).then((result)=>{
+       let user = result[0];
+       var token = jwt.encode(user,secret);
+       res.send(token);
+    }).catch((err)=>{
+        res.end(err.message)
     })
 })
 
+
+// token换取用户信息;
 router.post("/token",(req,res)=>{
     let obj = {...req.body};
     tokenSchema.validate(obj,(err,value)=>{
