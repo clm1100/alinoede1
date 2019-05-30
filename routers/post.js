@@ -43,13 +43,27 @@ router.get("/list",(req,res)=>{
     })
 })
 
-
+// 添加文章
 router.post("/add",getUserIdMiddle,(req,res)=>{
    ( async (req,res)=>{
         let obj = {...req.body};
         console.log(obj);
         const resvalidate = await postAddSchemal.validate(obj);
-        res.send(resvalidate)
+        let sql = `INSERT INTO posts SET ?`;
+        let dbresult = await new Promise((resolve,reject)=>{
+            db.query(sql,resvalidate,(err,result)=>{
+                if(!err){
+                    resolve(result)
+                }else{
+                    reject(err);
+                }
+            })
+        })
+        res.send({
+            code:"200",
+            id:dbresult.insertId,
+            ...resvalidate
+        })
     })(req,res).catch(err=>{
         res.send(err.message);
     })
