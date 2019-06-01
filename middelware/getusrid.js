@@ -9,7 +9,7 @@ const getUserIdMiddle=  authorizationHeader(function(err,req,res,next){
             req.body.user_id = userobj.id;
             next(); 
         }else{
-            res.send({message:"token失效了"})
+            res.send({code:1002,message:"token失效了"})
         }
     }else{
         res.send(err.message)
